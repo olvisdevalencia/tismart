@@ -1,0 +1,107 @@
+.aside-container {
+    width: 100%;
+    background-color: #FCFDFF;
+    overflow-x: hidden;
+    .user {
+        position: relative;
+        .full-name {
+            height: 20px;
+            width: 192.84px;
+            color: #415061;
+            //font-family: Asap;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 0.34px;
+            line-height: 20px;
+        }
+        .position {
+            position: relative;
+            bottom: 5px;
+            height: 15px;
+            width: 105px;
+            color: #7B8FA0;
+            //font-family: "Open Sans";
+            font-size: 11px;
+            letter-spacing: 0.22px;
+            line-height: 15px;
+        }
+    }
+    .line {
+        box-sizing: border-box;
+        height: 51.02px;
+        width: 1px;
+        border: 1px solid #7B8FA0;
+    }
+    .pais {
+        position: relative;
+        top: 18px;
+        height: 14px;
+        width: 21px;
+        color: #7B8FA0;
+        //font-family: "Open Sans";
+        font-size: 10px;
+        letter-spacing: 0.2px;
+        line-height: 14px;
+    }
+    .peru {
+        height: 21px;
+        width: 39px;
+        color: #415061;
+        //font-family: Asap;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 0.36px;
+        line-height: 21px;
+    }
+    .left-arrow {
+        font-weight: bolder;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    .institute {
+        position: relative;
+        right: 5px;
+        bottom: 1px;
+        height: 23px;
+        width: 52px;
+        color: #1283FF;
+        //font-family: Asap;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 0.4px;
+        line-height: 23px;
+    }
+    .el-menu {
+        border: none;
+        width: 100vw;
+        .el-menu-item {
+            height: 38px;
+            line-height: 38px;
+            &.is-active {
+                background-color: rgba(18,131,255,0.05);
+                border-left-color: #1283FF;
+                border-left: solid 4px;
+                span {
+                    height: 16px;
+                    width: 180.09px;
+                    color: #1283FF;
+                    //font-family: Asap;
+                    font-size: 12px;
+                    font-weight: bold;
+                    letter-spacing: 0.72px;
+                    line-height: 16px;
+                }
+            }
+            span {
+                height: 16px;
+                width: 180.09px;
+                color: #415061;
+                //font-family: Asap;
+                font-size: 12px;
+                font-weight: bold;
+                letter-spacing: 0.72px;
+                line-height: 16px;
+            }
+        }
+    }
+}
