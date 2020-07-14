@@ -1,0 +1,86 @@
+.career-container {
+    .career-title {
+        height: 23px;
+        width: 234px;
+        color: #1283FF;
+        //font-family: Asap;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        line-height: 23px;
+    }
+    .cycles {
+        .cycle-item {
+            .el-card__header {
+                border: none;
+                padding: 5px 20px;
+                .cycle-item-title {
+                    height: 20px;
+                    width: 51px;
+                    color: #415061;
+                    //font-family: Asap;
+                    font-size: 16px;
+                    font-weight: 600;
+                    letter-spacing: 0.32px;
+                    line-height: 20px;
+                }
+            }
+            .el-tag {
+                height: 35px;
+                border-radius: 6px;
+                background-color: #1283FF;
+                color: #FCFDFF;
+                //font-family: "Open Sans";
+                font-size: 10px;
+                letter-spacing: 0.2px;
+                line-height: 35px;
+            }
+            
+        }
+    }
+    .actions-buttons {
+        height: 50px;
+        right: 14px;
+        position: fixed;
+        bottom: 0px;
+        width: 75.5vw;
+        padding: 5px;
+        background-color: #F9FBFE;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+        .cancel-btn {
+            position: relative;
+            float: right;
+            box-sizing: border-box;
+            height: 42px;
+            width: 116.37px;
+            border: 1px solid #1283FF;
+            border-radius: 24px;
+            span {
+                color: #B1D2F7;
+                //font-family: Asap;
+                font-size: 12px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                line-height: 14px;
+                text-align: center;
+            }
+        }
+        .submit-btn {
+            position: relative;
+            float: right;
+            height: 42px;
+            width: 116.37px;
+            border-radius: 24px;
+            background: linear-gradient(90deg, #1580F2 0%, #9752FF 100%);
+            span {
+                color: #FFFFFF;
+                //font-family: Asap;
+                font-size: 12px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                line-height: 14px;
+                text-align: center;
+            }
+        }
+    }
+}

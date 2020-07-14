@@ -4,7 +4,6 @@ export default class Endpoint {
   constructor (endPointUrl) {
     this.endPointUrl = endPointUrl
     this.request = this.initial()
-    this.checker(this.request)
   }
 
   initial = () => {

@@ -10,4 +10,8 @@ export default class Default extends Endpoint {
   getFaculties = () => {
     return this.request.get('faculties')
   }
+
+  getCourses = () => {
+    return this.request.get('courses')
+  }
 }
