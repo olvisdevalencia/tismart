@@ -1,4 +1,4 @@
-# tismart
+# tismart develpment challenge
 
 ## Project setup
 ```
