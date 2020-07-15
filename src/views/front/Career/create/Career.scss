@@ -79,6 +79,9 @@
                 line-height: 14px;
                 text-align: center;
             }
+            &:focus {
+                outline: none;
+            }
         }
         .submit-btn {
             position: relative;
@@ -101,6 +104,9 @@
                 span {
                     color: #FFFFFF;
                 }
+            }
+            &:focus {
+                outline: none;
             }
         }
     }

@@ -1,4 +1,4 @@
-import { DEFAULT_FACULTY_LIST, DEFAULT_COURSES_LIST, DEFAULT_COURSES_LIST_UPDATE } from '@/store/actions/defaultQueries'
+import { DEFAULT_FACULTY_LIST, DEFAULT_COURSES_LIST, DEFAULT_COURSES_LIST_UPDATE, DEFAULT_CAREER_CREATE } from '@/store/actions/defaultQueries'
 import Default from '@/services/DefaultService'
 const api = new Default()
 
@@ -46,6 +46,14 @@ const actions = {
       console.error('ERROR bringing courses')
       console.log(err)
     })
+  },
+  async [DEFAULT_CAREER_CREATE] ({ commit }, data) {
+    console.log('la info que me llega desde el component')
+    console.log(data)
+    let message
+    const success = false
+
+    return { data: null, success: success, message }
   },
   [DEFAULT_COURSES_LIST_UPDATE] ({ commit }, data) {
     commit(DEFAULT_COURSES_LIST, data)

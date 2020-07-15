@@ -3,8 +3,8 @@
     <el-form ref="form" :model="form" :inline="false" label-width="80px">
       <div class="row">
         <div class="col-4">
-          <el-form-item label="Nombre">
-            <el-input v-model="form.name" :rules="rules.name"></el-input>
+          <el-form-item label="Nombre" prop="name" :rules="[{ required: true, message: 'El nombre es requerido', trigger: 'blur' }]">
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
         </div>
         <div class="col-4">
@@ -14,18 +14,16 @@
         </div>
         <div class="col">
           <el-checkbox v-model="form.cycleZero" class="checkbox-zero"></el-checkbox>
-          <span class="ml-2">Ciclo 0</span>
+          <span class="ml-2"> Ciclo 0 </span>
         </div>
         <div class="col-4">
-          <el-form-item label="Codigo">
-            <el-input v-model="form.code" :rules="rules.code"></el-input>
-          </el-form-item>
+          <el-form-item label="Codigo" prop="code" :rules="[{ required: true, message: 'El codigo es requerido', trigger: 'blur' }]">
+          <el-input v-model="form.code" :rules="rules.code"></el-input></el-form-item>
         </div>
         <div class="col-4">
-          <el-form-item label="Facultad">
+          <el-form-item label="Facultad" prop="faculty" :rules="[{ required: true, message: 'Facultad es requerido', trigger: 'blur' }]">
             <el-select v-model="form.faculty" placeholder="Seleccione" :rules="rules.faculty">
-              <el-option v-for="item in faculties" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
+              <el-option v-for="item in faculties" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -36,19 +34,16 @@
       <div class="cycle-item mt-2" v-if="form.cycleZero">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span class="cycle-item-title">Ciclo 0 </span>
+            <span class="cycle-item-title"> Ciclo 0 </span>
           </div>
           <div class="text item">
-            <el-tag class="mx-1 my-1"
-              v-for="(tag, index) in cycleZeroTagList" @v-if="(cycleZeroTagList.length) && tag.disabled" :key="index"
-              closable
+            <el-tag class="mx-1 my-1" v-for="(tag, index) in cycleZeroTagList" @v-if="(cycleZeroTagList.length) && tag.disabled" :key="index" closable
               :disable-transitions="false"
               @close="onRemoveZeroTag(tag)">
               {{ tag.label }}
             </el-tag>
             <el-select v-model="form.currentZeroTagValue" placeholder="Agregar curso a ciclo" filterable @change="onSelectedZeroCourse">
-              <el-option v-for="item in courses" :key="item.value" v-show="!item.disabled" :label="item.label" :value="item.value" :disabled="item.disabled">
-              </el-option>
+              <el-option v-for="item in courses" :key="item.value" v-show="!item.disabled" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>
             </el-select>
           </div>
         </el-card>
@@ -59,33 +54,30 @@
             <span class="cycle-item-title">Ciclo {{ o }}</span>
           </div>
           <div class="text item">
-            <el-tag class="mx-1 my-1"
-              v-for="(tag, index) in cycleTagList[o - 1]" @v-if="(cycleTagList[o - 1].length) && tag.disabled" :key="index"
-              closable
+            <el-tag class="mx-1 my-1" v-for="(tag, index) in cycleTagList[o - 1]" @v-if="(cycleTagList[o - 1].length) && tag.disabled" :key="index" closable
               :disable-transitions="false"
               @close="onRemoveTag(tag, o)">
               {{ tag.label }}
             </el-tag>
             <el-select v-model="form.currentTagValue" placeholder="Agregar curso a ciclo" filterable @change="onSelectedCourse" @focus="onSelectedOption(o)">
-              <el-option v-for="item in courses" :key="item.value" v-show="!item.disabled" :label="item.label" :value="item.value" :disabled="item.disabled">
-              </el-option>
+              <el-option v-for="item in courses" :key="item.value" v-show="!item.disabled" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>
             </el-select>
           </div>
         </el-card>
       </div>
     </div>
     <div class="actions-buttons">
-      <el-button class="submit-btn mx-2" :disabled="isDisabled()">GUARDAR</el-button>
-      <el-button class="cancel-btn" @click="onSubmit">CANCELAR</el-button>
+      <el-button class="submit-btn mx-2" :disabled="isDisabled()" @click="onSubmit">GUARDAR</el-button>
+      <el-button class="cancel-btn">CANCELAR</el-button>
     </div>
   </div>
 </template>
 
 <script>
 import '@/views/front/Career/create/Career.scss'
-import rules from '@/views/front/Career/create/rules'
+import rules, { arrayCheckZero, arrayCheck } from '@/views/front/Career/create/rules'
 import { mapGetters } from 'vuex'
-import { DEFAULT_FACULTY_LIST, DEFAULT_COURSES_LIST, DEFAULT_COURSES_LIST_UPDATE } from '@/store/actions/defaultQueries'
+import { DEFAULT_FACULTY_LIST, DEFAULT_COURSES_LIST, DEFAULT_COURSES_LIST_UPDATE, DEFAULT_CAREER_CREATE } from '@/store/actions/defaultQueries'
 
 export default {
   name: 'front.career.create',
@@ -197,7 +189,56 @@ export default {
       return selected
     },
     onSubmit () {
-      console.log('submit!')
+      const { form, cycleTagList, cycleZeroTagList } = this
+      const cicleZeroData = arrayCheckZero(cycleZeroTagList)
+      const cicleData = arrayCheck(cycleTagList)
+      const selectedFaculty = this.faculties.find(data => data.value === form.faculty)
+      const courses = cicleZeroData.concat(cicleData)
+      const noCoursesTxt = 'No pueden haber ciclos sin cursos'
+      const submitData = {
+        name: form.name,
+        code: form.code,
+        faculty: {
+          _id: selectedFaculty.value,
+          name: selectedFaculty.label
+        },
+        courses
+      }
+
+      if (form.cycleZero) {
+        if ((!cicleZeroData.length) || (!cicleData.length)) {
+          this.$message({ type: 'info', message: noCoursesTxt })
+        } else {
+          this.processForm(submitData)
+        }
+      } else {
+        if (!cicleData.length) {
+          this.$message({ type: 'info', message: noCoursesTxt })
+        } else {
+          this.processForm(submitData)
+        }
+      }
+    },
+    processForm (submitData) {
+      this.$confirm('Esta seguro de crear esta carrera ?', 'Advertencia', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch(DEFAULT_CAREER_CREATE, submitData).then((data) => {
+          if (data.success) {
+            this.$message({
+              type: 'success',
+              message: 'Carrera creada con exito'
+            })
+          } else {
+            this.$message({
+              type: 'info',
+              message: 'No pudimos procesar la transacción'
+            })
+          }
+        })
+      }).catch(() => {})
     }
   },
   mounted () {
