@@ -1,10 +1,10 @@
 <template>
   <div class="career-container">
-    <el-form ref="form" :inline="false" :model="form" label-width="80px">
+    <el-form ref="form" :model="form" :inline="false" label-width="80px">
       <div class="row">
         <div class="col-4">
           <el-form-item label="Nombre">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.name" :rules="rules.name"></el-input>
           </el-form-item>
         </div>
         <div class="col-4">
@@ -13,17 +13,17 @@
           </el-form-item>
         </div>
         <div class="col">
-          <el-checkbox v-model="form.cycleZero"></el-checkbox>
+          <el-checkbox v-model="form.cycleZero" class="checkbox-zero"></el-checkbox>
           <span class="ml-2">Ciclo 0</span>
         </div>
         <div class="col-4">
           <el-form-item label="Codigo">
-            <el-input v-model="form.code"></el-input>
+            <el-input v-model="form.code" :rules="rules.code"></el-input>
           </el-form-item>
         </div>
         <div class="col-4">
           <el-form-item label="Facultad">
-            <el-select v-model="form.faculty" placeholder="Seleccione">
+            <el-select v-model="form.faculty" placeholder="Seleccione" :rules="rules.faculty">
               <el-option v-for="item in faculties" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="actions-buttons">
-      <el-button class="submit-btn mx-2">GUARDAR</el-button>
+      <el-button class="submit-btn mx-2" :disabled="isDisabled()">GUARDAR</el-button>
       <el-button class="cancel-btn" @click="onSubmit">CANCELAR</el-button>
     </div>
   </div>
@@ -83,6 +83,7 @@
 
 <script>
 import '@/views/front/Career/create/Career.scss'
+import rules from '@/views/front/Career/create/rules'
 import { mapGetters } from 'vuex'
 import { DEFAULT_FACULTY_LIST, DEFAULT_COURSES_LIST, DEFAULT_COURSES_LIST_UPDATE } from '@/store/actions/defaultQueries'
 
@@ -94,13 +95,30 @@ export default {
       cycle: 1,
       code: '',
       faculty: null,
-      cycleZero: false
+      cycleZero: false,
+      validated: {
+        name: 0,
+        code: 0,
+        faculty: 0
+      }
     },
     focusedIndex: null,
     cycleTagList: [[]],
-    cycleZeroTagList: []
+    cycleZeroTagList: [],
+    rules: []
   }),
   watch: {
+    'form.name': function (val) {
+      this.form.name = this.blockSpecialChar(val).toUpperCase()
+      this.form.validated.name = this.form.name.length ? this.form.name.length : 0
+    },
+    'form.code': function (val) {
+      this.form.code = this.blockSpecialChar(val).toUpperCase()
+      this.form.validated.code = this.form.code.length ? this.form.code.length : 0
+    },
+    'form.faculty': function (val) {
+      this.form.validated.faculty = this.form.faculty.length ? this.form.faculty.length : 0
+    },
     'form.cycle': function (newVal, oldVal) {
       if (newVal > oldVal) {
         const newArray = []
@@ -127,6 +145,17 @@ export default {
     ...mapGetters({ faculties: ['getFacultyList'], courses: ['getCoursesList'] })
   },
   methods: {
+    isDisabled () {
+      let isDisabled = true
+      if (this.form.validated.name && this.form.validated.code && this.form.validated.faculty) {
+        isDisabled = false
+      }
+      return isDisabled
+    },
+    blockSpecialChar (val) {
+      const re = /[^A-Z0-9]/gi
+      return val.replace(re, '')
+    },
     fetchFaculties () {
       this.$store.dispatch(DEFAULT_FACULTY_LIST)
     },
@@ -170,6 +199,9 @@ export default {
     onSubmit () {
       console.log('submit!')
     }
+  },
+  mounted () {
+    this.rules = rules
   },
   created () {
     this.fetchFaculties()
