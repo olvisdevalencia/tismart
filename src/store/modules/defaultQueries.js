@@ -48,12 +48,17 @@ const actions = {
     })
   },
   async [DEFAULT_CAREER_CREATE] ({ commit }, data) {
-    console.log('la info que me llega desde el component')
-    console.log(data)
-    let message
-    const success = false
+    let success = false
+    let body
+    await api.createCareer(data).then(apiData => {
+      success = apiData.status === 201 ? true : success
+      body = apiData.data
+    }).catch(err => {
+      console.error('ERROR creating career')
+      console.log(err)
+    })
 
-    return { data: null, success: success, message }
+    return { body, success }
   },
   [DEFAULT_COURSES_LIST_UPDATE] ({ commit }, data) {
     commit(DEFAULT_COURSES_LIST, data)

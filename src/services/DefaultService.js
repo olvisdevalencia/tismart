@@ -14,4 +14,8 @@ export default class Default extends Endpoint {
   getCourses = () => {
     return this.request.get('courses')
   }
+
+  createCareer = (data) => {
+    return this.request.post('career', data)
+  }
 }

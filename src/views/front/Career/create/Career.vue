@@ -1,5 +1,5 @@
 <template>
-  <div class="career-container">
+  <div class="career-container" v-loading.fullscreen.lock="isLoading">
     <el-form ref="form" :model="form" :inline="false" label-width="80px">
       <div class="row">
         <div class="col-4">
@@ -97,7 +97,8 @@ export default {
     focusedIndex: null,
     cycleTagList: [[]],
     cycleZeroTagList: [],
-    rules: []
+    rules: [],
+    isLoading: false
   }),
   watch: {
     'form.name': function (val) {
@@ -220,25 +221,25 @@ export default {
       }
     },
     processForm (submitData) {
+      const notCreatedTxt = 'No pudimos procesar la transacción'
       this.$confirm('Esta seguro de crear esta carrera ?', 'Advertencia', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
+        this.isLoading = true
         this.$store.dispatch(DEFAULT_CAREER_CREATE, submitData).then((data) => {
           if (data.success) {
-            this.$message({
-              type: 'success',
-              message: 'Carrera creada con exito'
-            })
+            this.$message({ type: 'success', message: 'Carrera creada con exito' })
           } else {
-            this.$message({
-              type: 'info',
-              message: 'No pudimos procesar la transacción'
-            })
+            this.$message({ type: 'info', message: notCreatedTxt })
           }
+          this.isLoading = false
         })
-      }).catch(() => {})
+      }).catch(() => {
+        this.$message({ type: 'info', message: notCreatedTxt })
+        this.isLoading = false
+      })
     }
   },
   mounted () {
